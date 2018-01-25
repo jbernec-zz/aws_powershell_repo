@@ -35,7 +35,7 @@ $Ec2RouteTable = New-EC2RouteTable -VpcId $ec2Vpc.VpcId
 New-EC2Route -RouteTableId $Ec2RouteTable.RouteTableId -DestinationCidrBlock "0.0.0.0/0" -GatewayId $Ec2InternetGateway.InternetGatewayId
 Register-EC2RouteTable -RouteTableId $Ec2RouteTable.RouteTableId -SubnetId $ec2subnet.SubnetId
 
-#Create Security group
+#Create Security group and firewall rule for RDP
 $SecurityGroup = New-EC2SecurityGroup -Description "Non Default RDP Security group for AWS VM" -GroupName "RDPSecurityGroup" -VpcId $ec2Vpc.VpcId
 $Tag = New-Object Amazon.EC2.Model.Tag
 $Tag.Key = "Name"
