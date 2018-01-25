@@ -47,13 +47,6 @@ $iprule.FromPort = 3389
 $iprule.IpProtocol = "tcp"
 $iprule.IpRanges.Add('0.0.0.0/0')
 Grant-EC2SecurityGroupIngress -GroupId $securityGroup -IpPermission $iprule -Force
-$ip = New-Object Amazon.EC2.Model.IpPermission
-$ip.IpProtocol = "icmp"
-$ip.ToPort = -1
-$ip.FromPort = -1
-$ip.IpRanges.Add('0.0.0.0/0')
-Grant-EC2SecurityGroupIngress -GroupId $securityGroup -IpPermission $ip -Force
-Grant-EC2SecurityGroupIngress -GroupId $securityGroup -IpPermissions @{IpProtocol = "tcp"; FromPort = 5985; ToPort = 5986; IpRanges = @("0.0.0.0/0")}
 
 
 #Retrieve Amazon Machine Image Id property for Windows Server 2016
@@ -67,13 +60,7 @@ $Tag.Value = "MyElasticIP"
 New-EC2Tag -Resource $Ec2Address.AllocationId -Tag $Tag
 
 #Launch EC2Instance Virtual Machine
-#Create a firewall rule to enable WinRM access to the EC2 Instance
-$UserData = @"
-Set-NetFirewallRule -Name WINRM-HTTP-In-TCP-PUBLIC -RemoteAddress Any
-"@
-#Userdata has to be base64 encoded
-$UserDataBase64Encoded = [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($userdata))
-$ec2instance = New-EC2Instance -ImageId $imageid -MinCount 1 -MaxCount 1 -InstanceType t2.micro -KeyName mykeypair -SecurityGroupId $securityGroup -Monitoring_Enabled $true -SubnetId $ec2subnet.SubnetId -UserData $UserDataBase64Encoded
+$ec2instance = New-EC2Instance -ImageId $imageid -MinCount 1 -MaxCount 1 -InstanceType t2.micro -KeyName mykeypair -SecurityGroupId $securityGroup -Monitoring_Enabled $true -SubnetId $ec2subnet.SubnetId
 $Tag = New-Object Amazon.EC2.Model.Tag
 $Tag.Key = "Name"
 $Tag.Value = "MyVM"
