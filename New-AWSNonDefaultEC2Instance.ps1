@@ -1,11 +1,10 @@
-<#Set and Initialize AWS Credential and Profile for login and authentication
-Set-AWSCredential -AccessKey AKIAIFYCSX7M2IYRWL3A -SecretKey 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 -StoreAs AWSDemoProfile
+#Set and Initialize AWS Credential and Profile for login and authentication
+Set-AWSCredential -AccessKey AKIAIFYCSZ8M2IYRWD5B -SecretKey 1daQ62lpSzb8R4OorYg6pAjU1tk0WBUESLiNEdky -StoreAs AWSDemoProfile
 Initialize-AWSDefaultConfiguration -ProfileName AWSDemoProfile -Region us-west-1
 
 #Create Keypair for decrypting login creds
 $awskey = New-EC2KeyPair -KeyName mykeypair
 $awskey.KeyMaterial | Out-File -FilePath C:\AWSCred\mykeypair.pem
-/#>
 
 #Create non default virtual private cloud/virtual network, enable dns hostnames and tag the vpc resource
 $Ec2Vpc = New-EC2Vpc -CidrBlock "10.0.0.0/16" -InstanceTenancy default
